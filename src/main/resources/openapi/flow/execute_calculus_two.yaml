@@ -1,0 +1,28 @@
+document:
+  dsl: '1.0.3'
+  namespace: matrisk
+  name: calculus_two
+  version: '0.1.0'
+
+  
+
+# This section triggers the workflow automatically when a matching event arrives
+schedule:
+  on:
+    one:
+      with:
+        type: chain.exec.incoming
+
+do:
+  
+  - initialize:
+      set: ${ $workflow.input[0] }
+          
+  - retrieve_latest_parameters:
+      call: openapi
+      with:
+        document: 
+          endpoint: http://localhost:8080/q/openapi
+        operationId: getProcessParameters
+        parameters:
+          processId: calculus_two

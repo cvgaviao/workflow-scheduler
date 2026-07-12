@@ -1,0 +1,60 @@
+{
+  "openapi": "3.1.0",
+  "components": {
+    "schemas": {
+      "ProcessParameters": {
+        "type": "object",
+        "properties": {
+          "processName": {
+            "type": "string"
+          },
+          "taskParameters": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "paths": {
+    "/processes/{processId}/parameters": {
+      "get": {
+        "parameters": [
+          {
+            "name": "processId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProcessParameters"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Get Process Parameters",
+        "tags": [
+          "Parameters Resource"
+        ]
+      }
+    }
+  },
+  "info": {
+    "title": "mngproc-parameters-api API",
+    "version": "1.0.0-SNAPSHOT"
+  }
+}
