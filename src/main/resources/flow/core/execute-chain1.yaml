@@ -1,0 +1,34 @@
+document:
+  dsl: '1.0.3'
+  namespace: test
+  name: orchestrator
+  version: '0.1.0'
+do:
+  - findProcessParameters:
+      call: openapi
+      with:
+        document: 
+          endpoint: http://localhost:8085/q/openapi
+        operationId: getProcessParameters
+        parameters:
+          processId: calculus_one
+      output:
+        as: 
+          tasks: '${ .taskParameters }'
+           
+  - dispatchTasks:
+      for:
+        in: '.tasks'
+        each: task
+        at: index
+
+      do:
+        - emitTask:
+            emit:
+              event:
+                with:
+                  type: matrisk.processor.execution.request.v1
+                  source: orchestrator
+                  data:
+                    taskName: '${ $task.name }'
+                    parameters: ${ $task.parameters }
